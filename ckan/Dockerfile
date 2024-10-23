@@ -1,7 +1,12 @@
 FROM ckan/ckan-base:2.11.0
 
-# Install any extensions needed by your CKAN instance
-# See Dockerfile.dev for more details and examples
+# Install DCAT extension
+RUN  pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v0.0.6#egg=ckanext-dcat && \
+     pip3 install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v0.0.6/requirements.txt
+
+# Install OAuth2 extension
+RUN  pip3 install -e git+https://github.com/keitaroinc/ckanext-keycloak.git@v2.1#egg=ckanext-keycloak && \
+pip3 install -r https://raw.githubusercontent.com/keitaroinc/ckanext-keycloak/refs/tags/v2.1/requirements.txt
 
 # Copy custom initialization scripts
 COPY docker-entrypoint.d/* /docker-entrypoint.d/
