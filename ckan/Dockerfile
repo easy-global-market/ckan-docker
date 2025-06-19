@@ -12,8 +12,8 @@ RUN pip3 install -e git+https://github.com/ckan/ckanext-dcat.git@v2.1.0#egg=ckan
     pip3 install -r https://raw.githubusercontent.com/ckan/ckanext-dcat/v2.1.0/requirements.txt
 
 # Install OAuth2 extension
-RUN pip3 install -e git+https://github.com/keitaroinc/ckanext-keycloak.git@v2.1#egg=ckanext-keycloak && \
-    pip3 install -r https://raw.githubusercontent.com/keitaroinc/ckanext-keycloak/refs/tags/v2.1/requirements.txt
+RUN pip3 install -e git+https://github.com/keitaroinc/ckanext-keycloak.git#egg=ckanext-keycloak && \
+    pip3 install -r https://raw.githubusercontent.com/keitaroinc/ckanext-keycloak/refs/heads/master/requirements.txt
 
 # Copy custom initialization scripts
 COPY --chown=ckan-sys:ckan-sys docker-entrypoint.d/* /docker-entrypoint.d/
