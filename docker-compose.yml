@@ -21,6 +21,7 @@ services:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
   ckan:
+    platform: linux/amd64
     build:
       context: ckan/
       dockerfile: Dockerfile
