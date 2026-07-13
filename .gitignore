@@ -8,3 +8,6 @@ _solr/schema.xml
 _src/*
 local/*
 .env
+
+ckanext_custom_emails.egg-info
+__pycache__
