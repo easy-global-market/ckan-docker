@@ -17,6 +17,7 @@ services:
     depends_on:
       ckan:
         condition: service_healthy
+    restart: unless-stopped
     ports:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
@@ -45,6 +46,8 @@ services:
       - ckan_storage:/var/lib/ckan
       - pip_cache:/root/.cache/pip
       - site_packages:/usr/lib/python3.10/site-packages
+      - ./ckan/overrides/emails/invite_user.txt:/srv/app/src/ckan/ckan/templates/emails/invite_user.txt:ro
+      - ./ckan/overrides/emails/invite_user_subject.txt:/srv/app/src/ckan/ckan/templates/emails/invite_user_subject.txt:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000/api/action/status_show"]
