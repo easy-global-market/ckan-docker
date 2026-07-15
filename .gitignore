@@ -9,5 +9,3 @@ _src/*
 local/*
 .env
 
-ckanext_custom_emails.egg-info
-__pycache__
