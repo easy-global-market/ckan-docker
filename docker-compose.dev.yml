@@ -30,6 +30,8 @@ services:
       - site_packages:/usr/local/lib/python3.10/site-packages
       - local_bin:/usr/local/bin
       - home_dir:/srv/app/
+      - ./ckan/overrides/emails/invite_user.txt:/srv/app/src/ckan/ckan/templates/emails/invite_user.txt:ro
+      - ./ckan/overrides/emails/invite_user_subject.txt:/srv/app/src/ckan/ckan/templates/emails/invite_user_subject.txt:ro
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5000"]
