@@ -6,12 +6,30 @@ if [ -f /etc/egm/deploy/env-files/ckan/.env ]; then
   ENV_FILE="/etc/egm/deploy/env-files/ckan/.env"
   BACKUP_DIR="/opt/deploy/backup/ckan"
 else
-  ENV_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/.env"
   ENV_FILE="$HOME/ckan-docker/.env"
   BACKUP_DIR="$HOME/backup/ckan"
 fi
 
-source "$ENV_FILE"
+# Docker env files are plain KEY=VALUE, not shell syntax: values here can
+# contain characters ($, `, #, unquoted spaces...) that `source` would
+# misinterpret, so pull out only the keys we need instead of sourcing it
+env_value() {
+  local val
+  val=$(grep -m1 -E "^$1=" "$ENV_FILE" | cut -d'=' -f2-)
+  val="${val%\"}"; val="${val#\"}"
+  val="${val%\'}"; val="${val#\'}"
+  printf '%s' "$val"
+}
+
+POSTGRES_USER=$(env_value POSTGRES_USER)
+CKAN_DB=$(env_value CKAN_DB)
+DATASTORE_DB=$(env_value DATASTORE_DB)
+CKAN_STORAGE_PATH=$(env_value CKAN_STORAGE_PATH)
+
+if [ -z "$POSTGRES_USER" ] || [ -z "$CKAN_DB" ] || [ -z "$DATASTORE_DB" ]; then
+    echo "Could not read POSTGRES_USER/CKAN_DB/DATASTORE_DB from $ENV_FILE! Exiting."
+    exit 1
+fi
 
 # Number of days of history kept for backups
 # 1st argument passed on the command line, 30 by default
